@@ -105,5 +105,20 @@ require 'lazy-bootstrap'
 -- [[ Configure and install plugins ]]
 require 'lazy-plugins'
 
+
+
+local function show_mappings_with_fzf()
+  local maps = vim.api.nvim_exec("map", true)
+  local lines = vim.split(maps, "\n", true)
+  require('fzf-lua').fzf_exec(lines)
+end
+
+vim.api.nvim_create_user_command('FzfMap', show_mappings_with_fzf, {})
+
+
+
+
+
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
