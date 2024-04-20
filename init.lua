@@ -94,16 +94,16 @@ vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = false
 
 -- [[ Setting options ]]
-require 'options'
+-- require 'options'
 
 -- [[ Basic Keymaps ]]
-require 'keymaps'
+-- require 'keymaps'
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 require 'lazy-bootstrap'
 
 -- [[ Configure and install plugins ]]
-require 'lazy-plugins'
+-- require 'lazy-plugins'
 
 
 
