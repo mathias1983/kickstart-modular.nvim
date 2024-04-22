@@ -1,0 +1,22 @@
+local M = {}
+
+function M.setup()
+  -- Define the path to your Zellij layout or control script
+  local zellij_layout_path = "/path/to/your/layout.yaml"
+  local zellij_script_path = "/path/to/your/script.sh"
+
+  -- Create an autocommand that runs when NVim enters each buffer
+  vim.api.nvim_create_augroup("ZellijControl", { clear = true })
+  vim.api.nvim_create_autocmd("VimEnter", {
+    group = "ZellijControl",
+    pattern = "*",
+    callback = function()
+      -- Build the command to change Zellij layout; adjust as necessary for actual capabilities
+      local command = string.format("bash %s %s", zellij_script_path, zellij_layout_path)
+      -- Execute the shell command
+      vim.fn.system(command)
+    end,
+  })
+end
+
+return M
