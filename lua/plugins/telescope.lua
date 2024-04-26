@@ -104,33 +104,45 @@ return {
 
    
 
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-      vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      --vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-      vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-      vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+    --  vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+    --  vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
+    --  vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+    --  vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+    --  vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+    --  vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+    --  vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+    --  vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+    --  vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+    --  vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
-      vim.keymap.set('n', '<leader>sg', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", { desc = '[S]earch by [G]rep' })
+   --   vim.keymap.set('n', '<leader>sg', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", { desc = '[S]earch by [G]rep' })
+
+    --  vim.keymap.set('n', '<leader>sc', function() builtin.lsp_dynamic_workspace_symbols({symbols = {"class"} }) end, { desc = 'Class'})
+    --  vim.keymap.set('n', '<leader>sf', builtin.lsp_dynamic_workspace_symbols, { desc = 'Function', symbols = {"method"} })
 
 
 local which_key = require("which-key")
 
 -- Setup the mappings with group name and descriptions
 which_key.register({
+    s = {
+        name = " Search",  -- This will be the group name shown in which-key
+        f = { builtin.find_files, 'Files' },          
+        g = { ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", 'Grep all' },     
+        w = { function() builtin.lsp_dynamic_workspace_symbols({fname_width = 0.6,symbol_width=0.25, symbol_type_width = 0.15, show_line = true}) end, "Symbols in workspace" },     -- Fuzzy find all symbols in the workspace      
+        c = { function() builtin.lsp_dynamic_workspace_symbols({symbols = {"class"}, fname_width = 0.6,symbol_width=0.25, symbol_type_width = 0.15, show_line = true}) end, 'Class in workspace' },         
+        m = { function() builtin.lsp_dynamic_workspace_symbols({symbols = {"method"},fname_width = 0.6,symbol_width=0.25, symbol_type_width = 0.15, show_line = true}) end, 'Method in workspace' },          
+        s = { function() builtin.lsp_document_symbols({fname_width = 0.6,symbol_width=0.25, symbol_type_width = 0.15, show_line = true}) end, "Symbols in document" },       -- Fuzzy find all symbols in the current document
+    },
     g = {
-        name = "Go to",  -- This will be the group name shown in which-key
-        d = { builtin.lsp_definitions, "[Go to] Definition" },          -- Jump to the definition
+        name = " Go to",  -- This will be the group name shown in which-key
+        d = { builtin.lsp_definitions, "Definition" },          -- Jump to the definition
         r = { builtin.lsp_references, "References" },                  -- Find references
         i = { builtin.lsp_implementations, "Implementation" },          -- Jump to implementation
-        t = { builtin.lsp_type_definitions, "Type Definition" },        -- Jump to type definition
-        s = { function() vim.lsp.buf.document_symbol({fname_width = 0.6,symbol_width=0.25, symbol_type_width = 0.15, show_line = true}) end, "Document Symbols" },       -- Fuzzy find all symbols in the current document
-        w = { function() vim.lsp.buf.workspace_symbol({fname_width = 0.6,symbol_width=0.25, symbol_type_width = 0.15, show_line = true}) end, "Workspace Symbols" },     -- Fuzzy find all symbols in the workspace
-    },
+        t = { builtin.lsp_type_definitions, "Type" },        -- Jump to type definition
+       
+    }
+    
 }, { prefix = "<leader>" })
 
          
@@ -144,21 +156,21 @@ which_key.register({
           winblend = 10,
           previewer = false,
         })
-      end, { desc = '[/] Fuzzily search in current buffer' })
+      end, { desc = 'Fuzzily search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
       vim.keymap.set('n', '<leader>s/', function()
         builtin.live_grep {
           grep_open_files = true,
-          prompt_title = 'Live Grep in Open Files',
+          prompt_title = 'Grep open files',
         }
-      end, { desc = '[S]earch [/] in Open Files' })
+      end, { desc = 'Grep open Files' })
 
       -- Shortcut for searching your Neovim configuration files
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[S]earch [N]eovim files' })
+      end, { desc = 'Neovim files' })
     end,
   },
 }
