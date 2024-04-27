@@ -1,0 +1,5 @@
+os:
+- rg
+- fzf
+- fd
+- nerd fonts
