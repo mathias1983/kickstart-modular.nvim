@@ -139,7 +139,7 @@ which_key.register({
         name = " Go to",  -- This will be the group name shown in which-key
         d = { builtin.lsp_definitions, "Definition" },          -- Jump to the definition
         r = { builtin.lsp_references, "References" },                  -- Find references
-        i = { builtin.lsp_implementations, "Implementation" },          -- Jump to implementation
+    --    i = { builtin.lsp_implementations, "Implementation" },          -- Jump to implementation
         t = { builtin.lsp_type_definitions, "Type" },        -- Jump to type definition
        
     }
